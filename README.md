@@ -20,3 +20,8 @@ Functions:
     dy = g1smm(y,m,bdef,p1,p2)
     dy = g1slw(y,m,par)
 ```
+
+# Concept notes
+
+We re-format the right-hand-sides to be compatible with the .f90 (Fortan-90) standart as it's more flexible with formatting
+and automated formatters and linters (fprettify) exist that make the source code more readable and maintable.
