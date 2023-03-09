@@ -111,3 +111,47 @@ subroutine g1slw(Y, DY, M, par)
        &U*(3.0d0/((Y(M) - Y(M - 1))**three) - 3.0d0/((Y(1) - Y(M) + M)**three) -&
        &one/((Y(M - 1) - Y(M - 2))**three) + one/((Y(2) - Y(1))**three))
 end subroutine
+
+SUBROUTINE gkrug(Y, DY, M, par)
+   intent(in) Y
+   intent(in) M
+   intent(in) par
+   intent(out) DY
+!c     Model: Popkov, Krug, PRB 73, 235430 (2006)
+   integer M
+!c         up to 7.02.07 M was declared as integer AFTER the line below!
+   real*8 Y(*), DY(*)
+   real*8 one, two, three, be, U, bem, bep
+   real*8 par(5)
+
+   one = 1.0d0
+   two = 2.0d0
+   three = par(5) + 1
+   be = par(1)
+   U = par(2)
+   bem = (one - be)/two
+   bep = (one + be)/two
+!c
+   DY(1) = bem*(Y(2) - Y(1)) + bep*(Y(1) - Y(M) + M) + &
+         &U*(3.0d0/((Y(1) - Y(M) + M)**three) - 3.0d0/((Y(2) - Y(1))**three) - &
+         &one/((Y(M) - Y(M - 1))**three) + one/((Y(3) - Y(2))**three))
+
+   DY(2) = bem*(Y(3) - Y(2)) + bep*(Y(2) - Y(1)) + &
+         &U*(3.0d0/((Y(2) - Y(1))**three) - 3.0d0/((Y(3) - Y(2))**three) - &
+         &one/((Y(1) - Y(M) + M)**three) + one/((Y(4) - Y(3))**three))
+
+   do i = 3, M - 2
+      DY(i) = bem*(Y(i + 1) - Y(i)) + bep*(Y(i) - Y(i - 1)) + &
+            &U*(3.0d0/((Y(i) - Y(i - 1))**three) - 3.0d0/((Y(i + 1) - Y(i))**three) - &
+            &one/((Y(i - 1) - Y(i - 2))**three) + one/((Y(i + 2) - Y(i + 1))**three))
+   end do
+
+   DY(M - 1) = bem*(Y(M) - Y(M - 1)) + bep*(Y(M - 1) - Y(M - 2)) + &
+            &U*(3.0d0/((Y(M - 1) - Y(M - 2))**three) - 3.0d0/((Y(M) - Y(M - 1))**three) - &
+            &one/((Y(M - 2) - Y(M - 3))**three) + one/((Y(1) - Y(M) + M)**three) &
+            &)
+
+   DY(M) = bem*(Y(1) - Y(M) + M) + bep*(Y(M) - Y(M - 1)) + &
+         &U*(3.0d0/((Y(M) - Y(M - 1))**three) - 3.0d0/((Y(1) - Y(M) + M)**three) - &
+         &one/((Y(M - 1) - Y(M - 2))**three) + one/((Y(2) - Y(1))**three))
+end subroutine
