@@ -62,8 +62,8 @@ subroutine g1smm(Y, DY, M, bdef, p1, p2)
     du(1) = 1.0d0 / dtem ** p2
     du(M + 1) = du(1)
     ! c
-    do I = 1, M
-        DY(I) = dk(i) - du(i + 1) + du(i)
+    do i = 1, M
+        DY(i) = dk(i) - du(i + 1) + du(i)
     end do
 end subroutine
 
