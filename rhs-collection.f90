@@ -165,7 +165,7 @@ subroutine g_pk2(Y, DY, M, par)
 !c     the stabilization part is the same but the destabilization part is the stabilization one with an opposite signe
 !c     and evenually different power.
 !c
-   integer M
+   integer M, i
 !c         up to 7.02.07 M was declared as integer AFTER the line below!
    real*8 Y(*), DY(*)
    real*8 one, two, U, K, en, ro
