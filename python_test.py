@@ -8,7 +8,7 @@ f2py.compile(sourcecode, modulename='rhs_collection', extension=".f90")
 
 try:
     import rhs_collection 
-    print("Sucessful compilation!")
+    print("Successful compilation!")
     print(rhs_collection.__doc__)
 except Exception as ex:
     print("Failed to compile.")
