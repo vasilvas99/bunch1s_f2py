@@ -1,7 +1,7 @@
 
 !c------------------------------------------------------------------------------
 !c             M O D E L S:
-      SUBROUTINE gpmm2(Y, DY, M, bdef, p1, p2)
+      subroutine gpmm2(Y, DY, M, bdef, p1, p2)
 !f2py intent(in) Y
 !f2py intent(in) M
 !f2py intent(in) bdef
@@ -35,11 +35,10 @@
          do I = 1, M
             DY(I) = dk(i + 1) - dk(i) - du(i + 1) + du(i)
          end do
-         return
-      end
+      end subroutine
 
 !c------------------------------------------------------------------------
-      SUBROUTINE g1smm(Y, DY, M, bdef, p1, p2)
+      subroutine g1smm(Y, DY, M, bdef, p1, p2)
 !f2py intent(in) Y
 !f2py intent(in) M
 !f2py intent(in) bdef
@@ -66,9 +65,9 @@
          do I = 1, M
             DY(I) = dk(i) - du(i + 1) + du(i)
          end do
-      end
+      end subroutine
 
-      SUBROUTINE g1slw(Y, DY, M, par)
+      subroutine g1slw(Y, DY, M, par)
 !f2py intent(in) Y
 !f2py intent(in) M
 !f2py intent(in) par
@@ -111,4 +110,4 @@
          DY(M) = bem*(Y(1) - Y(M) + M) + bep*(Y(M) - Y(M - 1)) +&
                      &U*(3.0d0/((Y(M) - Y(M - 1))**three) - 3.0d0/((Y(1) - Y(M) + M)**three) -&
                      &one/((Y(M - 1) - Y(M - 2))**three) + one/((Y(2) - Y(1))**three))
-      end
+      end subroutine
