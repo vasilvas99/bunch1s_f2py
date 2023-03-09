@@ -112,7 +112,7 @@ subroutine g1slw(Y, DY, M, par)
        &one/((Y(M - 1) - Y(M - 2))**three) + one/((Y(2) - Y(1))**three))
 end subroutine
 
-SUBROUTINE gkrug(Y, DY, M, par)
+subroutine gkrug(Y, DY, M, par)
    intent(in) Y
    intent(in) M
    intent(in) par
