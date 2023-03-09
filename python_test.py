@@ -10,5 +10,9 @@ try:
     import rhs_collection 
     print("Successful compilation!")
     print(rhs_collection.__doc__)
-except Exception as ex:
+    import os, glob
+    compiled_module = glob.glob("*cpython*")[0]
+    os.remove(compiled_module)
+except Exception as ex: 
     print("Failed to compile.")
+    print(f"{ex}")
