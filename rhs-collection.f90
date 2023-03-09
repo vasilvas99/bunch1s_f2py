@@ -2,12 +2,12 @@
 ! c------------------------------------------------------------------------------
 ! c             M O D E L S:
 subroutine gpmm2(Y, DY, M, bdef, p1, p2)
-    ! f2py intent(in) Y
-    ! f2py intent(in) M
-    ! f2py intent(in) bdef
-    ! f2py intent(in) p1
-    ! f2py intent(in) p2
-    ! f2py intent(out) DY
+    !f2py intent(in) Y
+    !f2py intent(in) M
+    !f2py intent(in) bdef
+    !f2py intent(in) p1
+    !f2py intent(in) p2
+    !f2py intent(out) DY
     ! c     13.09.02
     ! c corresponds to MMII, non-dimensionalized!
     ! c   Last correction of the model:
@@ -39,12 +39,12 @@ end subroutine
 
 ! c------------------------------------------------------------------------
 subroutine g1smm(Y, DY, M, bdef, p1, p2)
-    ! f2py intent(in) Y
-    ! f2py intent(in) M
-    ! f2py intent(in) bdef
-    ! f2py intent(in) p1
-    ! f2py intent(in) p2
-    ! f2py intent(out) DY
+    !f2py intent(in) Y
+    !f2py intent(in) M
+    !f2py intent(in) bdef
+    !f2py intent(in) p1
+    !f2py intent(in) p2
+    !f2py intent(out) DY
     ! c     One-sided MM0 model non-dimensionalized!
     ! c   (c) V. Tonchev, 15.01.2012
     ! c)   In this program - after 28.03.2011
@@ -68,10 +68,10 @@ subroutine g1smm(Y, DY, M, bdef, p1, p2)
 end subroutine
 
 subroutine g1slw(Y, DY, M, par)
-    ! f2py intent(in) Y
-    ! f2py intent(in) M
-    ! f2py intent(in) par
-    ! f2py intent(out) DY
+    !f2py intent(in) Y
+    !f2py intent(in) M
+    !f2py intent(in) par
+    !f2py intent(out) DY
     ! c???????????????????????????????????
     ! C Model:Popkov, Krug, PRB 73, 235430(2006)
     integer M
