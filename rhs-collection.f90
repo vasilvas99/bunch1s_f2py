@@ -155,3 +155,58 @@ subroutine gkrug(Y, DY, M, par)
          &U*(3.0d0/((Y(M) - Y(M - 1))**three) - 3.0d0/((Y(1) - Y(M) + M)**three) - &
          &one/((Y(M - 1) - Y(M - 2))**three) + one/((Y(2) - Y(1))**three))
 end subroutine
+
+subroutine g_pk2(Y, DY, M, par)
+   intent(in) Y
+   intent(in) M
+   intent(in) par
+   intent(out) DY
+!C     evolves from the Model of Popkov, Krug, PRB 73, 235430 (2006), LW2
+!c     the stabilization part is the same but the destabilization part is the stabilization one with an opposite signe
+!c     and evenually different power.
+!c
+   integer M
+!c         up to 7.02.07 M was declared as integer AFTER the line below!
+   real*8 Y(*), DY(*)
+   real*8 one, two, U, K, en, ro
+   real*8 par(5)
+
+   one = 1.0d0
+   two = 2.0d0
+   en = par(5) + 1.0d0
+   K = par(1)
+   U = par(2)
+   ro = par(4) + 1.0d0
+!c      in the beginning we take the destabilizing power to be ro = 1
+!c
+!c
+!c
+   DY(1) = -K*(3.0d0/((Y(1) - Y(M) + M)**ro) - 3.0d0/((Y(2) - Y(1))**ro) - &
+         &one/((Y(M) - Y(M - 1))**ro) + one/((Y(3) - Y(2))**ro) &
+         &+ U*(3.0d0/((Y(1) - Y(M) + M)**en) - 3.0d0/((Y(2) - Y(1))**en) &
+         &- one/((Y(M) - Y(M - 1))**en) + one/((Y(3) - Y(2))**en)))
+
+   DY(2) = -K*(3.0d0/((Y(2) - Y(1))**ro) - 3.0d0/((Y(3) - Y(2))**ro) - &
+         &one/((Y(1) - Y(M) + M)**ro) + one/((Y(4) - Y(3))**ro) &
+         &+ U*(3.0d0/((Y(2) - Y(1))**en) - 3.0d0/((Y(3) - Y(2))**en) - &
+         &one/((Y(1) - Y(M) + M)**en) + one/((Y(4) - Y(3))**en)))
+
+   do i = 3, M - 2
+      DY(i) = -K*(3.0d0/((Y(i) - Y(i - 1))**ro) - 3.0d0/((Y(i + 1) - Y(i))**ro) - &
+            &one/((Y(i - 1) - Y(i - 2))**ro) + one/((Y(i + 2) - Y(i + 1))**ro)) &
+            &+ U*(3.0d0/((Y(i) - Y(i - 1))**en) - 3.0d0/((Y(i + 1) - Y(i))**en) - &
+            &one/((Y(i - 1) - Y(i - 2))**en) + one/((Y(i + 2) - Y(i + 1))**en))
+   end do
+
+   DY(M - 1) = -K*(3.0d0/((Y(M - 1) - Y(M - 2))**ro) - 3.0d0/((Y(M) - Y(M - 1))**ro) - &
+            &one/((Y(M - 2) - Y(M - 3))**ro) + one/((Y(1) - Y(M) + M))**ro) &
+            &+ U*(3.0d0/((Y(M - 1) - Y(M - 2))**en) - 3.0d0/((Y(M) - Y(M - 1))**en) &
+            &- one/((Y(M - 2) - Y(M - 3))**en) + one/((Y(1) - Y(M) + M)**en))
+
+   DY(M) = -K*(3.0d0/((Y(M) - Y(M - 1))**ro) - 3.0d0/((Y(1) - Y(M) + M)**ro) - &
+            &one/((Y(M - 1) - Y(M - 2))**ro) + one/((Y(2) - Y(1))**ro)) &
+            &+ U*(3.0d0/((Y(M) - Y(M - 1))**en) - 3.0d0/((Y(1) - Y(M) + M)**en) - &
+            &one/((Y(M - 1) - Y(M - 2))**en) + one/((Y(2) - Y(1))**en))
+
+end subroutine
+
