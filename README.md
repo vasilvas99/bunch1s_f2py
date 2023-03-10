@@ -31,3 +31,17 @@ Functions:
 
 We re-format the right-hand-sides to be compatible with the .f90 (Fortan-90) standart as it's more flexible with formatting
 and automated formatters and linters (fprettify) exist that make the source code more readable and maintainable.
+
+# Initial results
+
+Integrating the wrapped g1smm with LSODA from SciPy for parameters:
+
+```
+bdef = 2.0
+p1 = 3.0
+p2 = 2.0
+```
+
+Yields nice looking trajectories and grouping:
+
+![g1smm](initial_results/g1smm.png)

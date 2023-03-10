@@ -34,7 +34,7 @@ def rhs(t, y):
 
 
 odeprob = sint.ode(rhs)
-odeprob.set_integrator('LSODA', nsteps=3000, rtol=1e-10)
+odeprob.set_integrator('LSODA', rtol=1e-10)
 odeprob.set_initial_value(y0)
 
 
@@ -51,5 +51,6 @@ plt.rcParams['figure.dpi'] = 400 # set figure dpi
 
 for i in range(0, N_steps, 2): # plot every second trajectory
     plt.plot(ts, ys[:,i], linewidth=1)
-
+    
+plt.savefig("initial_results/g1smm.png", dpi=300)
 plt.show()
