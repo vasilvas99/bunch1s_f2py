@@ -4,8 +4,8 @@ import scipy.integrate as sint
 import random
 import matplotlib.pyplot as plt
 
-N_steps = 30
-T_max = 100
+N_steps = 50
+T_max = 2000
 h = 0.1
 
 try:
@@ -34,7 +34,7 @@ def rhs(t, y):
 
 
 odeprob = sint.ode(rhs)
-odeprob.set_integrator('vode', method='bdf', order=5, nsteps=3000)
+odeprob.set_integrator('LSODA', nsteps=3000, rtol=1e-10)
 odeprob.set_initial_value(y0)
 
 
@@ -50,6 +50,6 @@ ys = np.array(ys)
 plt.rcParams['figure.dpi'] = 400 # set figure dpi
 
 for i in range(0, N_steps, 2): # plot every second trajectory
-    plt.plot(ts, ys[:,i])
+    plt.plot(ts, ys[:,i], linewidth=1)
 
 plt.show()
