@@ -2,12 +2,12 @@
 ! c------------------------------------------------------------------------------
 ! c             M O D E L S:
 subroutine gpmm2(Y, DY, M, bdef, p1, p2)
-   intent(in) Y
+   real*8, intent(in)::Y(M)
    intent(in) M
    intent(in) bdef
    intent(in) p1
    intent(in) p2
-   intent(out) DY
+   real*8, intent(out)::DY(M)
    ! c     13.09.02
    ! c corresponds to MMII, non-dimensionalized!
    ! c   Last correction of the model:
@@ -17,7 +17,7 @@ subroutine gpmm2(Y, DY, M, bdef, p1, p2)
    ! c   (c) V. Tonchev, 04.01.2012
    ! c)   In this program - after 28.03.2011
    integer M, i
-   real(8) Y(*), DY(*), dk(M + 1), du(M + 1), dtem
+   real(8) dk(M + 1), du(M + 1), dtem
    real(8) p1, p2
    real(8) bdef
    ! c calculate inverse of the distances and its third power:
@@ -39,17 +39,17 @@ end subroutine
 
 ! c------------------------------------------------------------------------
 subroutine g1smm(Y, DY, M, bdef, p1, p2)
-   intent(in) Y
+   real*8, intent(in)::Y(M)
    intent(in) M
    intent(in) bdef
    intent(in) p1
    intent(in) p2
-   intent(out) DY
+   real*8, intent(out)::DY(M)
    ! c     One-sided MM0 model non-dimensionalized!
    ! c   (c) V. Tonchev, 15.01.2012
    ! c)   In this program - after 28.03.2011
    integer M, i
-   real(8) Y(*), DY(*), dk(M + 1), du(M + 1), dtem
+   real(8) dk(M + 1), du(M + 1), dtem
    real(8) p1, p2, bdef
    ! c calculate inverse of the distances and its third power:
    do i = 2, M
@@ -68,15 +68,14 @@ subroutine g1smm(Y, DY, M, bdef, p1, p2)
 end subroutine
 
 subroutine g1slw(Y, DY, M, par)
-   intent(in) Y
+   real*8, intent(in)::Y(M)
    intent(in) M
    intent(in) par
-   intent(out) DY
+   real*8, intent(out)::DY(M)
    ! c???????????????????????????????????
    ! C Model:Popkov, Krug, PRB 73, 235430(2006)
    integer M
    ! c up to 7.02.07 M was declared as integer AFTER the line below!
-   real(8) Y(*), DY(*)
    real(8) one, two, three, be, U, bem, bep
    real(8) par(5)
 
@@ -113,14 +112,13 @@ subroutine g1slw(Y, DY, M, par)
 end subroutine
 
 subroutine gkrug(Y, DY, M, par)
-   intent(in) Y
+   real*8, intent(in)::Y(M)
    intent(in) M
    intent(in) par
-   intent(out) DY
+   real*8, intent(out)::DY(M)
 !c     Model: Popkov, Krug, PRB 73, 235430 (2006)
    integer M
 !c         up to 7.02.07 M was declared as integer AFTER the line below!
-   real*8 Y(*), DY(*)
    real*8 one, two, three, be, U, bem, bep
    real*8 par(5)
 
@@ -157,17 +155,16 @@ subroutine gkrug(Y, DY, M, par)
 end subroutine
 
 subroutine g_pk2(Y, DY, M, par)
-   intent(in) Y
+   real*8, intent(in)::Y(M)
    intent(in) M
    intent(in) par
-   intent(out) DY
+   real*8, intent(out)::DY(M)
 !C     evolves from the Model of Popkov, Krug, PRB 73, 235430 (2006), LW2
 !c     the stabilization part is the same but the destabilization part is the stabilization one with an opposite signe
 !c     and evenually different power.
 !c
    integer M, i
 !c         up to 7.02.07 M was declared as integer AFTER the line below!
-   real*8 Y(*), DY(*)
    real*8 one, two, U, K, en, ro
    real*8 par(5)
 
@@ -211,10 +208,10 @@ subroutine g_pk2(Y, DY, M, par)
 end subroutine
 
 subroutine g_mm0(Y, DY, M, par)
-   intent(in) Y
+   real*8, intent(in)::Y(M)
    intent(in) M
    intent(in) par
-   intent(out) DY
+   real*8, intent(out)::DY(M)
 !c     13.09.02
 !c corresponds to MMI as introduced by VT in 2002 but slightly changed
 !c      to meet the analogy with the model of Popkov and Krug thus
@@ -223,7 +220,7 @@ subroutine g_mm0(Y, DY, M, par)
 !c      in the stabilization part the terrace widths are raised to (n+1)
 !c     (c) VT, May 2008, Lexington KY
    integer M, i
-   real*8 Y(*), DY(*), d(M + 1), d3(M + 1), dtem
+   real*8 d(M + 1), d3(M + 1), dtem
    real*8 on
    data on/1.0d0/
    real*8 U, en, b, bp1, bm1
@@ -257,13 +254,13 @@ subroutine g_mm0(Y, DY, M, par)
 end subroutine
 
 subroutine g_mm1(Y, DY, M, par)
-   intent(in) Y
+   real*8, intent(in)::Y(M)
    intent(in) M
    intent(in) par
-   intent(out) DY
+   real*8, intent(out)::DY(M)
 !c     13.09.02
 !c corresponds to MMI
-   real*8 Y(*), DY(*), d(M + 1), d3(M + 1), dtem
+   real*8 d(M + 1), d3(M + 1), dtem
    integer M, i
    real*8 on
    data on/1.0d0/
@@ -290,13 +287,14 @@ subroutine g_mm1(Y, DY, M, par)
    end do
 end subroutine
 
-SUBROUTINE gise2(Y, DY, M, par)
-   intent(in) Y
+subroutine gise2(Y, DY, M, par)
+   real*8, intent(in)::Y(M)
    intent(in) M
    intent(in) par
-   intent(out) DY
-   INTEGER M, i
-   REAL*8 Y(*), DY(*), d(0:M + 1), d2(0:M + 1), d3(0:M + 2), Ybc(0:M + 1)
+   real*8, intent(out)::DY(M)
+
+   integer M, i
+   real*8 d(0:M + 1), d2(0:M + 1), d3(0:M + 2), Ybc(0:M + 1)
    real*8 on, tw, three
    data on, tw/1.d0, 2.d0/
    real*8 gama, l0l, dpl, dml, a3, gama3
