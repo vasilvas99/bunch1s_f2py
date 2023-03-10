@@ -13,12 +13,18 @@ If it's successful it would print the compiled module documentation:
 
 ```shell
 $ python3 python_test.py
+...
 Successful compilation!
-This module 'rhs_collection' is auto-generated with f2py (version:1.24.1).
+This module 'rhs_collection' is auto-generated with f2py (version:1.24.0).
 Functions:
     dy = gpmm2(y,m,bdef,p1,p2)
     dy = g1smm(y,m,bdef,p1,p2)
     dy = g1slw(y,m,par)
+    dy = gkrug(y,m,par)
+    dy = g_pk2(y,m,par)
+    dy = g_mm0(y,m,par)
+    dy = g_mm1(y,m,par)
+    dy = gise2(y,m,par)
 ```
 
 # Concept notes
