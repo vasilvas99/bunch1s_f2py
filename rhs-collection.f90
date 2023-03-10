@@ -210,3 +210,140 @@ subroutine g_pk2(Y, DY, M, par)
 
 end subroutine
 
+subroutine g_mm0(Y, DY, M, par)
+   intent(in) Y
+   intent(in) M
+   intent(in) par
+   intent(out) DY
+!c     13.09.02
+!c corresponds to MMI as introduced by VT in 2002 but slightly changed
+!c      to meet the analogy with the model of Popkov and Krug thus
+!c      it still has 2 parameters - b and U, like in the PK model         plus
+!c      the two powers r and n, note the difference - here
+!c      in the stabilization part the terrace widths are raised to (n+1)
+!c     (c) VT, May 2008, Lexington KY
+   integer M, i
+   real*8 Y(*), DY(*), d(M + 1), d3(M + 1), dtem
+   real*8 on
+   data on/1.0d0/
+   real*8 U, en, b, bp1, bm1
+   real*8 par(5)
+!c     first we study the case ro = 1.0 as in the PK model
+!c        ro=par(4)
+   b = par(1)
+   bp1 = (b + 1.0d0)/2.0d0
+   bm1 = (1.0d0 - b)/2.0d0
+   U = par(2)
+   en = par(5) + 1.0d0
+!c calculate inverse of the distances and its third power:
+
+   do i = 2, M
+      dtem = Y(i) - Y(i - 1)
+!c         d(i)=dtem**ro        ! so instead of this line we have:
+      d(i) = dtem
+      d3(i) = on/dtem**en
+   end do
+
+   dtem = Y(1) - Y(M) + M
+!c        d(1)=dtem**ro  ! here also:
+   d(1) = dtem
+   d(M + 1) = d(1)
+   d3(1) = on/dtem**en
+   d3(M + 1) = d3(1)
+!c
+   do i = 1, M
+      DY(i) = bp1*d(i) + bm1*d(i + 1) - U*(d3(i + 1) - d3(i))
+   end do
+end subroutine
+
+subroutine g_mm1(Y, DY, M, par)
+   intent(in) Y
+   intent(in) M
+   intent(in) par
+   intent(out) DY
+!c     13.09.02
+!c corresponds to MMI
+   real*8 Y(*), DY(*), d(M + 1), d3(M + 1), dtem
+   integer M, i
+   real*8 on
+   data on/1.0d0/
+   real*8 ro, a3, en, beta
+   real*8 par(5)
+   ro = par(1)
+   beta = par(2)
+   a3 = par(3)
+   en = par(5)
+!c calculate inverse of the distances and its third power:
+   do i = 2, M
+      dtem = Y(i) - Y(i - 1)
+      d(i) = dtem**ro
+      d3(i) = on/dtem**en
+   end do
+   dtem = Y(1) - Y(M) + M
+   d(1) = dtem**ro
+   d(M + 1) = d(1)
+   d3(1) = on/dtem**en
+   d3(M + 1) = d3(1)
+!c
+   do i = 1, M
+      DY(i) = d(i) + beta*d(i + 1) - a3*(d3(i + 1) - d3(i))
+   end do
+end subroutine
+
+SUBROUTINE gise2(Y, DY, M, par)
+   intent(in) Y
+   intent(in) M
+   intent(in) par
+   intent(out) DY
+   INTEGER M, i
+   REAL*8 Y(*), DY(*), d(0:M + 1), d2(0:M + 1), d3(0:M + 2), Ybc(0:M + 1)
+   real*8 on, tw, three
+   data on, tw/1.d0, 2.d0/
+   real*8 gama, l0l, dpl, dml, a3, gama3
+   real*8 tp1, tp2, tp3, tp4, tp5, tp6
+   real*8 di1, di, dn1, dn
+   real*8 ft, st, dyi
+   real*8 par(5)
+   gama = par(1)
+   l0l = par(2)
+   dpl = par(3)
+   dml = par(4)
+   three = par(5) + 1.0d0
+   a3 = l0l**three
+   gama3 = a3*gama
+!c calculate distances:
+   do i = 1, M
+      Ybc(i) = Y(i)
+   end do
+   Ybc(0) = y(M) - M
+   Ybc(M + 1) = Y(1) + M
+!c
+   do i = 1, M + 1
+      dyi = Ybc(i) - Ybc(i - 1)
+      d(i) = dyi
+      d2(i) = dyi*dyi/tw
+      d3(i) = on/dyi**three
+   end do
+!c
+   d(0) = d(M)
+   d2(0) = d2(M)
+   d3(0) = d3(M)
+   d3(M + 2) = d3(2)
+!c
+   do i = 1, M
+      di = d(i)
+      di1 = d(i + 1)
+      dn = on/(dpl + dml + di)
+      dn1 = on/(dpl + dml + di1)
+      tp1 = d3(i + 2)
+      tp4 = d3(i + 1)
+      tp2 = tw*tp4
+      tp3 = d3(i)
+      tp5 = tw*tp3
+      tp6 = d3(i - 1)
+      ft = (d2(i + 1) + dml*di1)*dn1
+      ft = ft + (d2(i) + dpl*di)*dn
+      st = -(tp2 - tp1 - tp3)*dn1 + (tp5 - tp4 - tp6)*dn
+      DY(i) = ft + gama3*st
+   end do
+end subroutine
