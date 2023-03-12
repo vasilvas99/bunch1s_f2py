@@ -1,20 +1,15 @@
-from numpy import f2py
 import numpy as np
 import scipy.integrate as sint
 import random
 import matplotlib.pyplot as plt
 
+import sys
+sys.path.append('./build')
+import bunch1s
+
 N_steps = 50
 T_max = 2000
 h = 0.1
-
-try:
-    import rhs_collection
-except Exception as ex:
-    with open("rhs-collection.f90") as sourcefile:
-        sourcecode = sourcefile.read()
-    f2py.compile(sourcecode, modulename='rhs_collection', extension=".f90")
-    import rhs_collection
 
 def generate_random_initial_surface(Nsteps):
     list = [i * 1.0 for i in range(1, Nsteps + 1)]
@@ -24,13 +19,13 @@ def generate_random_initial_surface(Nsteps):
     list.sort()
     return np.array(list)
 
-print(rhs_collection.__doc__)
+print(bunch1s.__doc__)
 
 y0 = generate_random_initial_surface(N_steps)
 dy = np.zeros_like(y0)
 
 def rhs(t, y):
-    return np.squeeze(rhs_collection.g1smm(y, 2.0, 3.0, 2.0))
+    return np.squeeze(bunch1s.g1smm(y, 2.0, 3.0, 2.0))
 
 
 odeprob = sint.ode(rhs)
