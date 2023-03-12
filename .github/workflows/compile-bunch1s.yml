@@ -53,13 +53,15 @@ jobs:
       with:
         compiler: gcc
         version: 12
-      
-    - name: Install Deps
-    run: python3 -m pip install -r requirements.txt
-    
+
+
+
     - name: Setup cmake
       uses: jwlawson/actions-setup-cmake@v1.13
 
+    - name: Install Python Deps
+    run: python3 -m pip install -r requirements.txt
+    
     - name: build
       run: $python_exec = python -c "import sys; print(sys.executable)"; mkdir build_windows; cmake -DPYTHON_EXECUTABLE:FILEPATH=$python_exec -S . -B ./build_windows -G "Unix Makefiles"; cd build_windows ; make 
       
