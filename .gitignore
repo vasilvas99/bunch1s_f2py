@@ -1,4 +1,4 @@
 *.cpython*
-build/
+build*
 CMakeFiles/
 CMakeCache.txt
