@@ -35,7 +35,7 @@ jobs:
         name: build_unix
         path: build/bunch1s.*
 
-  build-linux:
+  build-windows:
   runs-on: windows-latest
   strategy:
     max-parallel: 5
