@@ -50,6 +50,9 @@ jobs:
     
     - name: Install Deps
       run: pip install -r requirements.txt
+      
+    - name: Print stuff
+      run: python -c "import numpy.f2py; print(numpy.f2py.get_include())" && python --version
     
     - uses: awvwgk/setup-fortran@main
       id: setup-fortran
