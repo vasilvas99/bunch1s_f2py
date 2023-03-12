@@ -28,24 +28,25 @@ jobs:
       uses: jwlawson/actions-setup-cmake@v1.13
 
     - name: build
-      run: mkdir build && cmake -S . -B ./build && cd build && make
+      run: mkdir build_unix && cmake -S . -B ./build_unix && cd build_unix && make
       
     - uses: actions/upload-artifact@v3
       with:
         name: build_unix
-        path: build/bunch1s.*
+        path: build_unix/bunch1s.*
 
   build-windows:
     runs-on: windows-latest
     strategy:
       max-parallel: 5
 
-    steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v3
-      with:
-        python-version: '3.10'
+    # # windows runner come with a python version pre-installed
+    # steps:
+    # - uses: actions/checkout@v3
+    # - name: Set up Python 3.10
+    #   uses: actions/setup-python@v3
+    #   with:
+    #     python-version: '3.10'
     
     - name: Install Deps
       run: pip install -r requirements.txt
@@ -60,9 +61,9 @@ jobs:
       uses: jwlawson/actions-setup-cmake@v1.13
 
     - name: build
-      run: mkdir build && cmake -S . -B ./build -G "Unix Makefiles" && cd build && make 
+      run: mkdir build_windows && cmake -S . -B ./build_windows -G "Unix Makefiles" && cd build_windows && make 
       
     - uses: actions/upload-artifact@v3
       with:
         name: build_windows
-        path: build/bunch1s.*
+        path: build_windows/bunch1s.*

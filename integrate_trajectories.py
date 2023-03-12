@@ -2,9 +2,6 @@ import numpy as np
 import scipy.integrate as sint
 import random
 import matplotlib.pyplot as plt
-
-import sys
-sys.path.append('./build')
 import bunch1s
 
 N_steps = 50
