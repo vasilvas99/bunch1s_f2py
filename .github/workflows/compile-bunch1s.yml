@@ -33,7 +33,7 @@ jobs:
     - uses: actions/upload-artifact@v3
       with:
         name: build_unix
-        path: build/bunch1s.*
+        path: build_unix/bunch1s.*
 
   build-windows:
     runs-on: windows-latest
