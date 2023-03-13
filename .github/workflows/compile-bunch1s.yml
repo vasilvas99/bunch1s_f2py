@@ -64,7 +64,7 @@ jobs:
       run: python3 -c "import numpy.f2py; print(numpy.f2py.get_include())"
     
     - name: build
-      run: $python_exec = python3 -c "import sys; print(sys.executable)"; mkdir build_windows; cmake -DPYTHON_EXECUTABLE:FILEPATH=$python_exec -S . -B ./build_windows -G "Unix Makefiles"; cd build_windows ; make 
+      run: $python_exec = python3 -c "import sys; print(sys.executable)"; mkdir build_windows; cmake -DPYTHON_EXECUTABLE=$python_exec -S . -B ./build_windows -G "Unix Makefiles"; cd build_windows ; make 
       
     - uses: actions/upload-artifact@v3
       with:
