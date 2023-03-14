@@ -23,14 +23,14 @@ python3 -c "import bunch1s; print(bunch1s.__doc__);"
 ...
 This module 'bunch1s' is auto-generated with f2py (version:1.24.0).
 Functions:
-    dy = gpmm2(y,m,bdef,p1,p2)
-    dy = g1smm(y,m,bdef,p1,p2)
-    dy = g1slw(y,m,par)
-    dy = gkrug(y,m,par)
-    dy = g_pk2(y,m,par)
-    dy = g_mm0(y,m,par)
-    dy = g_mm1(y,m,par)
-    dy = gise2(y,m,par)
+    dy = gpmm2(y,bdef,p1,p2,m=shape(y, 0))
+    dy = g1smm(y,bdef,p1,p2,m=shape(y, 0))
+    dy = g1slw(y,par,m=shape(y, 0))
+    dy = gkrug(y,par,m=shape(y, 0))
+    dy = g_pk2(y,par,m=shape(y, 0))
+    dy = g_mm0(y,par,m=shape(y, 0))
+    dy = g_mm1(y,par,m=shape(y, 0))
+    dy = gise2(y,par,m=shape(y, 0))
 ```
 
 # Concept notes
