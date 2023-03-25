@@ -1,3 +1,14 @@
+"""
+    pybunch1s is a high-level pythonic interface module for the bunch1s models. Requires the compiled fortran bunch1s module
+    to be availabe.
+
+    Download and extract the pre-compiled fortran code for your platform from:
+
+    Linux: https://nightly.link/vasilvas99/bunch1s_f2py/workflows/compile-bunch1s/main/build_unix.zip?h=5e973cebe0192e1902ec70ffb6946e18b78a24b2
+    Windows: https://nightly.link/vasilvas99/bunch1s_f2py/workflows/compile-bunch1s/main/build_windows.zip?h=5e973cebe0192e1902ec70ffb6946e18b78a24b2
+
+    and place it next to this file.
+"""
 try:
     import bunch1s as b1s
 except:
@@ -14,8 +25,8 @@ except:
     """
                             )
 
-
 import numpy as np 
+
 
 def gpmm2(y: np.ndarray, bdef: float, p1: float, p2: float) -> np.ndarray:
     """
