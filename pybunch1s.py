@@ -54,7 +54,7 @@ def gpmm2(y: np.ndarray, bdef: float, p1: float, p2: float) -> np.ndarray:
     """
     return b1s.gpmm2(y, bdef, p1, p2)
 
-def gpmm2(y: np.ndarray, bdef: float, p1: float, p2: float) -> np.ndarray:
+def g1smm(y: np.ndarray, bdef: float, p1: float, p2: float) -> np.ndarray:
     """   
     
     One-sided MM0 model non-dimensionalized!
@@ -70,7 +70,7 @@ def gpmm2(y: np.ndarray, bdef: float, p1: float, p2: float) -> np.ndarray:
     Returns:
         np.ndarray: step velocities
     """
-    return b1s.gpmm2(y, bdef, p1, p2)
+    return b1s.g1smm(y, bdef, p1, p2)
 
 def g1slw(y: np.ndarray, b: float, U: float, n: float) -> np.ndarray:
     """    

@@ -2,7 +2,7 @@ import numpy as np
 import scipy.integrate as sint
 import random
 import matplotlib.pyplot as plt
-import bunch1s
+import pybunch1s
 
 N_steps = 50
 T_max = 2000
@@ -16,13 +16,11 @@ def generate_random_initial_surface(Nsteps):
     list.sort()
     return np.array(list)
 
-print(bunch1s.__doc__)
-
 y0 = generate_random_initial_surface(N_steps)
 dy = np.zeros_like(y0)
 
 def rhs(t, y):
-    return np.squeeze(bunch1s.g1smm(y, 2.0, 3.0, 2.0))
+    return np.squeeze(pybunch1s.g1smm(y, 2.0, 3.0, 2.0))
 
 
 odeprob = sint.ode(rhs)
