@@ -66,3 +66,14 @@ p2 = 2.0
 Yields nice looking trajectories and grouping:
 
 ![g1smm](initial_results/g1smm.png)
+
+
+## pybunch1s and integrate_trajectories
+
+pybunch1s provides a high-level python interface for all the wrapped functions in order to enable type-checking and IDE suggestions.
+
+integrate_trajectories is now a library that provides all the basic tools needed to integrate a model.
+
+## surface_statistics
+
+Provides lstat and hstat
