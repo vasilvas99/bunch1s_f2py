@@ -30,13 +30,13 @@ def integrate_step_trajectory(y0, T_max, rhs, h=0.1, t0=0.0):
     return ts, ys
 
 
-def plot_step_trajectory(ts, ys, N_steps):
+def plot_step_trajectory(ts, ys, N_steps, filepath="initial_results/integration_results.png"):
     plt.rcParams["figure.dpi"] = 400  # set figure dpi
 
     for i in range(0, N_steps, 1):  # plot every second trajectory
         plt.plot(ts, ys[:, i], linewidth=1)
 
-    plt.savefig("initial_results/g1smm.png", dpi=500)
+    plt.savefig(filepath, dpi=500)
     plt.show()
 
 def export_to_txt(ts, ys, filename="step_trajectories.dat"):
@@ -54,8 +54,8 @@ def main():
 
     y0 = generate_random_vicinal(N_steps=N, initial_var=0.3, bdef=2)
     # ts, ys = integrate_step_trajectory(y0, T_max=1300, rhs=rhs)
-    ts, ys = rk23(rhs, y0, T=50_000, h0=0.01, tol=0.001)
-    # export_to_txt(ts, ys)
+    ts, ys = rk23(rhs, y0, T=10_000, h0=0.01, tol=0.001)
+    export_to_txt(ts, ys)
     plot_step_trajectory(ts, ys, N_steps=N)
 
 
