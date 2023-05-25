@@ -307,7 +307,7 @@ subroutine g_lw(Y, DY, M, par)
    do i = 2, M
       deltaY(i) = Y(i) - Y(i-1)
    end do
-   deltaY(1) = Y(1) - Y(M)
+   deltaY(1) = Y(1) - Y(M) + M
 
    ! calculate the local force terms
    do i = 1, M-1

@@ -1,7 +1,6 @@
 import random
 import pybunch1s
 import numpy as np
-from time import monotonic
 import scipy.integrate as sint
 import matplotlib.pyplot as plt
 from home_integrators import rk23
@@ -53,10 +52,10 @@ def main():
         # return pybunch1s.g_mm1(y, alpha=0.08, beta=0.0, rho=1.0, n=3.0)
         return pybunch1s.g_lw(y, p=3, n=1)
 
-    y0 = generate_random_vicinal(N_steps=N, initial_var=0.02)
+    y0 = generate_random_vicinal(N_steps=N, initial_var=0.3, bdef=2)
     # ts, ys = integrate_step_trajectory(y0, T_max=1300, rhs=rhs)
-    ts, ys = rk23(rhs, y0, T=3500, h0=0.01, tol=0.001)
-    export_to_txt(ts, ys)
+    ts, ys = rk23(rhs, y0, T=50_000, h0=0.01, tol=0.001)
+    # export_to_txt(ts, ys)
     plot_step_trajectory(ts, ys, N_steps=N)
 
 
