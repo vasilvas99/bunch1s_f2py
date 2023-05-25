@@ -4,3 +4,6 @@ CMakeFiles/
 CMakeCache.txt
 *pyd
 *so
+*png
+*dat
+*csv
