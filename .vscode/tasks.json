@@ -6,7 +6,14 @@
         {
             "label": "rebuild",
             "type": "shell",
-            "command": "${workspaceRoot}/rebuild_dev.sh"
+            "command": "${workspaceRoot}/rebuild_dev.sh",
+            "problemMatcher": []
+        },
+        {
+            "label": "integrate",
+            "type": "shell",
+            "command": "python3 ${workspaceRoot}/integrate_trajectories.py",
+            "problemMatcher": []
         }
     ]
 }
