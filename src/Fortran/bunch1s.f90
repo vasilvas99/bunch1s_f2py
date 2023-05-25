@@ -294,37 +294,42 @@ subroutine g_lw(Y, DY, M, par)
    intent(in) par
    real*8, intent(out)::DY(M)
 
-   real*8 F(M + 1), A(M+1), R(M+1)
    integer M, i
-   real*8 on
-   data on/1.0d0/
    real*8 p, n
    real*8 par(5)
+
+   real*8 Fattr(M), Frepuls(M), A(M), R(M), deltaY(M)
    
    p = par(1)
    n = par(2)
-   
 
-   ! calculcate the forces F
+   ! calculate terrace widths
    do i = 2, M
-      F(i) = 1.0/(Y(i) - Y(i - 1))
+      deltaY(i) = Y(i) - Y(i-1)
    end do
+   deltaY(1) = Y(1) - Y(M)
 
-   ! calculate the b.c.
-   F(1) = 1.0/(Y(1) - Y(M) + M)
-   F(M + 1) = F(1)
+   ! calculate the local force terms
+   do i = 1, M-1
+      Fattr(i) = deltaY(i+1)**(-p-1) - deltaY(i)**(-p-1)
+      Frepuls(i) = deltaY(i+1)**(-n-1) - deltaY(i)**(-n-1)
+   end do
+   Fattr(M) = deltaY(1)**(-p-1) - deltaY(M)**(-p-1)
+   Frepuls(M) = deltaY(1)**(-n-1) - deltaY(i)**(-n-1)
 
-   do i = 2, M
-      A(i) = F(i+1)**(p+1) - 2*F(i)**(p+1) + F(i-1)**(p+1)
-      R(i) = -(F(i+1)**(n+1) - 2*F(i)**(n+1) + F(i-1)**(n+1))
+   ! combine in the final attracion-repulsion forces for LW
+   do i = 2, M-1
+      A(i) = Fattr(i+1) - 2*Fattr(i) + Fattr(i-1)
+      R(i) = -(Frepuls(i+1) - 2*Frepuls(i) + Frepuls(i-1))
    end do
    
-   A(1) = F(2)**(p+1) - 2*F(1)**(p+1) + F(M+1)**(p+1)
-   R(1) = -(F(2)**(n+1) - 2*F(1)**(n+1) + F(M+1)**(n+1))
+   A(M) = Fattr(1) - 2*Fattr(M) + Fattr(M-1)
+   R(M) = -(Frepuls(1) - 2*Frepuls(M) + Frepuls(M-1))
 
-   A(M+1) = F(1)**(p+1) - 2*F(M+1)**(p+1) + F(M)**(p+1)
-   R(M+1) = -(F(1)**(n+1) - 2*F(M+1)**(n+1) + F(M)**(n+1))
+   A(1) = Fattr(2) - 2*Fattr(1) + Fattr(M)
+   R(1) = -(Frepuls(2) - 2*Frepuls(1) + Frepuls(M))
 
+   ! calculate step velocities
    do i = 1, M
       DY(i) = A(i) + R(i)
    end do
