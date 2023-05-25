@@ -335,6 +335,54 @@ subroutine g_lw(Y, DY, M, par)
    end do
 end subroutine
 
+
+subroutine g_te(Y, DY, M, par)
+   real*8, intent(in)::Y(M)
+   intent(in) M
+   intent(in) par
+   real*8, intent(out)::DY(M)
+
+   integer M, i
+   real*8 p, n
+   real*8 par(5)
+
+   real*8 Fattr(M), Frepuls(M), A(M), R(M), deltaY(M)
+   
+   p = par(1)
+   n = par(2)
+
+   ! calculate terrace widths
+   do i = 2, M
+      deltaY(i) = Y(i) - Y(i-1)
+   end do
+   deltaY(1) = Y(1) - Y(M) + M
+
+   ! calculate the local force terms
+   do i = 1, M-1
+      Fattr(i) = deltaY(i)**(-p-1) - deltaY(i+1)**(-p-1)
+      Frepuls(i) = deltaY(i)**(-n-1) - deltaY(i+1)**(-n-1)
+   end do
+   Fattr(M) = deltaY(M)**(-p-1) - deltaY(1)**(-p-1)
+   Frepuls(M) = deltaY(M)**(-n-1) - deltaY(1)**(-n-1)
+
+   ! combine in the final attracion-repulsion forces for TE
+   do i = 1, M-2
+      A(i) = -( (deltaY(i+1)**(-1))*(Fattr(i+2)-Fattr(i+1)) - (deltaY(i)**(-1))*(Fattr(i+1)-Fattr(i))    )
+      R(i) =  (deltaY(i+1)**(-1))*(Frepuls(i+2)-Frepuls(i+1)) - (deltaY(i)**(-1))*(Frepuls(i+1)-Frepuls(i))
+   end do
+
+   A(M-1) = -( (deltaY(M)**(-1))*(Fattr(1)-Fattr(M)) - (deltaY(M-1)**(-1))*(Fattr(M)-Fattr(M-1))    )
+   R(M-1) =  (deltaY(M)**(-1))*(Frepuls(1)-Frepuls(M)) - (deltaY(M-1)**(-1))*(Frepuls(M)-Frepuls(M-1))   
+
+   A(M) = -( (deltaY(1)**(-1))*(Fattr(2)-Fattr(1)) - (deltaY(M)**(-1))*(Fattr(1)-Fattr(M))    )
+   R(M) =  (deltaY(1)**(-1))*(Frepuls(2)-Frepuls(1)) - (deltaY(M)**(-1))*(Frepuls(1)-Frepuls(M))
+
+   ! calculate step velocities
+   do i = 1, M
+      DY(i) = A(i) + R(i)
+   end do
+end subroutine
+
 subroutine gise2(Y, DY, M, par)
    real*8, intent(in)::Y(M)
    intent(in) M

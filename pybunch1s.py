@@ -208,3 +208,17 @@ def g_lw(y: np.ndarray, p: float, n: float) -> np.ndarray:
     """
     par = np.array([p, n, 0, 0, 0])
     return b1s.g_lw(y, par)
+
+def g_te(y: np.ndarray, p: float, n: float) -> np.ndarray:
+    """TE non-dimensionalized
+
+    Args:
+        y (np.ndarray): step positions
+        p (float): attraction exponent
+        n (float): repulsion exponent
+
+    Returns:
+        np.ndarray: step velocities
+    """
+    par = np.array([p, n, 0, 0, 0])
+    return b1s.g_te(y, par)
