@@ -1,6 +1,7 @@
 import random
 import pybunch1s
 import numpy as np
+from time import monotonic
 import scipy.integrate as sint
 import matplotlib.pyplot as plt
 
@@ -45,10 +46,14 @@ def main():
     N = 150
 
     def rhs(t, y):
-        return pybunch1s.g_mm1(y, alpha=0.08, beta=0.0, rho=1.0, n=3.0)
+        # return pybunch1s.g_mm1(y, alpha=0.08, beta=0.0, rho=1.0, n=3.0)
+        return pybunch1s.g_lw(y, p=0, n=0)
 
+    t_start = monotonic()
     y0 = generate_random_vicinal(N_steps=N, initial_var=0.2)
     ts, ys = integrate_step_trajectory(y0, T_max=1300, rhs=rhs)
+    t_stop = monotonic()
+    print(f"Time to integrade {t_stop-t_start}")
     plot_step_trajectory(ts, ys, N_steps=N)
 
 

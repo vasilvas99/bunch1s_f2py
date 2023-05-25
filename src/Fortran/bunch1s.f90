@@ -287,6 +287,49 @@ subroutine g_mm1(Y, DY, M, par)
    end do
 end subroutine
 
+
+subroutine g_lw(Y, DY, M, par)
+   real*8, intent(in)::Y(M)
+   intent(in) M
+   intent(in) par
+   real*8, intent(out)::DY(M)
+
+   real*8 F(M + 1), A(M+1), R(M+1)
+   integer M, i
+   real*8 on
+   data on/1.0d0/
+   real*8 p, n
+   real*8 par(5)
+   
+   p = par(1)
+   n = par(2)
+   
+
+   ! calculcate the forces F
+   do i = 2, M
+      F(i) = 1.0/(Y(i) - Y(i - 1))
+   end do
+
+   ! calculate the b.c.
+   F(1) = 1.0/(Y(1) - Y(M) + M)
+   F(M + 1) = F(1)
+
+   do i = 2, M
+      A(i) = F(i+1)**(p+1) - 2*F(i)**(p+1) + F(i-1)**(p+1)
+      R(i) = -(F(i+1)**(n+1) - 2*F(i)**(n+1) + F(i-1)**(n+1))
+   end do
+   
+   A(1) = F(2)**(p+1) - 2*F(1)**(p+1) + F(M+1)**(p+1)
+   R(1) = -(F(2)**(n+1) - 2*F(1)**(n+1) + F(M+1)**(n+1))
+
+   A(M+1) = F(1)**(p+1) - 2*F(M+1)**(p+1) + F(M)**(p+1)
+   R(M+1) = -(F(1)**(n+1) - 2*F(M+1)**(n+1) + F(M)**(n+1))
+
+   do i = 1, M
+      DY(i) = A(i) + R(i)
+   end do
+end subroutine
+
 subroutine gise2(Y, DY, M, par)
    real*8, intent(in)::Y(M)
    intent(in) M
