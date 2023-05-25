@@ -311,11 +311,11 @@ subroutine g_lw(Y, DY, M, par)
 
    ! calculate the local force terms
    do i = 1, M-1
-      Fattr(i) = deltaY(i+1)**(-p-1) - deltaY(i)**(-p-1)
-      Frepuls(i) = deltaY(i+1)**(-n-1) - deltaY(i)**(-n-1)
+      Fattr(i) = deltaY(i)**(-p-1) - deltaY(i+1)**(-p-1)
+      Frepuls(i) = deltaY(i)**(-n-1) - deltaY(i+1)**(-n-1)
    end do
-   Fattr(M) = deltaY(1)**(-p-1) - deltaY(M)**(-p-1)
-   Frepuls(M) = deltaY(1)**(-n-1) - deltaY(i)**(-n-1)
+   Fattr(M) = deltaY(M)**(-p-1) - deltaY(1)**(-p-1)
+   Frepuls(M) = deltaY(M)**(-n-1) - deltaY(1)**(-n-1)
 
    ! combine in the final attracion-repulsion forces for LW
    do i = 2, M-1
