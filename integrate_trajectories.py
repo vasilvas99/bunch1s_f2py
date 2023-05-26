@@ -4,6 +4,7 @@ import numpy as np
 import scipy.integrate as sint
 import matplotlib.pyplot as plt
 from home_integrators import rk23
+from trajectory_statistics import l_stat
 
 def generate_random_vicinal(N_steps, initial_var=0.1, bdef=1.0):
     list = [i * 1.0 for i in range(1, N_steps + 1)]
@@ -56,10 +57,34 @@ def main():
 
     y0 = generate_random_vicinal(N_steps=N, initial_var=0.001, bdef=2)
     # ts, ys = integrate_step_trajectory(y0, T_max=1300, rhs=rhs) # for mm
-    ts, ys = rk23(rhs, y0, T=1000, h0=0.01, tol=0.001)  # for lw
+    ts, ys = rk23(rhs, y0, T=90_000, h0=0.01, tol=0.001)  # for lw
     # export_to_txt(ts, ys)
     plot_step_trajectory(ts, ys, N_steps=N)
 
 
+def integrate_and_lstat():
+    N = 50
+
+    def rhs(t, y):
+        return pybunch1s.g_lw(y, p=0, n=2)
+
+    y0 = generate_random_vicinal(N_steps=N, initial_var=0.001, bdef=2)
+    ts, ys = rk23(rhs, y0, T=50_000, h0=0.01, tol=0.001)  # for lw
+    
+    MES_KEY = "mind"
+    
+    measurements = []
+    for idx, t in enumerate(ts):
+        measurement = np.abs(l_stat(Y=ys[idx], tk=t, bdef=2.0)[MES_KEY])
+        measurements.append(measurement)
+    measurements = np.array(measurements)
+    
+    
+    plt.xlabel("Log t")
+    plt.ylabel(f"Log {MES_KEY}")
+    plt.scatter(np.log(ts), np.log(measurements))
+    plt.show()
+    
 if __name__ == "__main__":
     main()
+    # integrate_and_lstat()
