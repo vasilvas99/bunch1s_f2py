@@ -31,11 +31,12 @@ def integrate_step_trajectory(y0, T_max, rhs, h=0.1, t0=0.0):
 
 
 def plot_step_trajectory(ts, ys, N_steps, filepath="initial_results/integration_results.png"):
-    plt.rcParams["figure.dpi"] = 400  # set figure dpi
+    plt.rcParams["figure.dpi"] = 200  # set figure dpi
 
     for i in range(0, N_steps, 1):  # plot every second trajectory
         plt.plot(ts, ys[:, i], linewidth=1)
-
+    plt.xlabel("Time, Dimensionless")
+    plt.ylabel("Step position, dimensionless")
     plt.savefig(filepath, dpi=500)
     plt.show()
 
@@ -50,12 +51,12 @@ def main():
 
     def rhs(t, y):
         # return pybunch1s.g_mm1(y, alpha=0.08, beta=0.0, rho=1.0, n=3.0)
-        # return pybunch1s.g_lw(y, p=0, n=2)
-        return pybunch1s.g_te(y, p=0, n=2)
+        return pybunch1s.g_lw(y, p=0, n=2)
+        # return pybunch1s.g_te(y, p=0, n=2)
 
     y0 = generate_random_vicinal(N_steps=N, initial_var=0.001, bdef=2)
     # ts, ys = integrate_step_trajectory(y0, T_max=1300, rhs=rhs) # for mm
-    # ts, ys = rk23(rhs, y0, T=160000, h0=0.01, tol=0.001)  # for lw
+    ts, ys = rk23(rhs, y0, T=1000, h0=0.01, tol=0.001)  # for lw
     # export_to_txt(ts, ys)
     plot_step_trajectory(ts, ys, N_steps=N)
 
