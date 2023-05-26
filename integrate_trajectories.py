@@ -50,11 +50,12 @@ def main():
 
     def rhs(t, y):
         # return pybunch1s.g_mm1(y, alpha=0.08, beta=0.0, rho=1.0, n=3.0)
+        # return pybunch1s.g_lw(y, p=0, n=2)
         return pybunch1s.g_te(y, p=0, n=2)
 
     y0 = generate_random_vicinal(N_steps=N, initial_var=0.001, bdef=2)
-    # ts, ys = integrate_step_trajectory(y0, T_max=1300, rhs=rhs)
-    ts, ys = rk23(rhs, y0, T=1500, h0=0.01, tol=0.001)
+    # ts, ys = integrate_step_trajectory(y0, T_max=1300, rhs=rhs) # for mm
+    # ts, ys = rk23(rhs, y0, T=160000, h0=0.01, tol=0.001)  # for lw
     # export_to_txt(ts, ys)
     plot_step_trajectory(ts, ys, N_steps=N)
 

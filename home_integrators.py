@@ -1,7 +1,7 @@
 import numpy as np
-from tqdm import tqdm
+from tqdm import tqdm, TqdmWarning
 import warnings
-warnings.filterwarnings("ignore")
+warnings.filterwarnings("ignore", category=TqdmWarning)
 
 def rk23(rhs, y0, T, h0, tol, t0=0):
     # local truncation error estimator
