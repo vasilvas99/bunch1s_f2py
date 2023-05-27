@@ -14,6 +14,12 @@
             "type": "shell",
             "command": "python3 ${workspaceRoot}/integrate_trajectories.py",
             "problemMatcher": []
+        },
+        {
+            "label": "full run",
+            "type": "shell",
+            "command": "${workspaceRoot}/full_run.sh",
+            "problemMatcher": []
         }
     ]
 }
