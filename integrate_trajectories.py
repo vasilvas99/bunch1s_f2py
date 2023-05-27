@@ -41,50 +41,32 @@ def plot_step_trajectory(ts, ys, N_steps, filepath="initial_results/integration_
     plt.savefig(filepath, dpi=500)
     plt.show()
 
-def export_to_txt(ts, ys, filename="step_trajectories.dat"):
+def export_to_txt(ts, ys, bdef, filename="step_trajectories.dat"):
     data = np.column_stack((ts, ys))
     header = ["t"] + [f"step_{i}" for i in range(ys.shape[1])]
     header = "\t".join(header)
+    with open(f"meta_{filename}", mode="w") as f:
+        f.write("# FORMAT: number_of_rows<newline>number_of_columns<newline>bdef<newline>\n")
+        f.writelines([f"{dim}\n" for dim in data.shape])
+        f.write(f"{bdef}\n")
+
     np.savetxt(filename, data, delimiter="\t", header=header, comments="")
 
 def main():
-    N = 50
+    N = 150
+    bdef = 2.0
 
     def rhs(t, y):
         # return pybunch1s.g_mm1(y, alpha=0.08, beta=0.0, rho=1.0, n=3.0)
         return pybunch1s.g_lw(y, p=0, n=2)
         # return pybunch1s.g_te(y, p=0, n=2)
 
-    y0 = generate_random_vicinal(N_steps=N, initial_var=0.001, bdef=2)
+    y0 = generate_random_vicinal(N_steps=N, initial_var=0.001, bdef=bdef)
     # ts, ys = integrate_step_trajectory(y0, T_max=1300, rhs=rhs) # for mm
-    ts, ys = rk23(rhs, y0, T=90_000, h0=0.01, tol=0.001)  # for lw
-    # export_to_txt(ts, ys)
+    ts, ys = rk23(rhs, y0, T=700, h0=0.01, tol=0.001)  # for lw
+    export_to_txt(ts, ys, bdef)
     plot_step_trajectory(ts, ys, N_steps=N)
 
-
-def integrate_and_lstat():
-    N = 50
-
-    def rhs(t, y):
-        return pybunch1s.g_lw(y, p=0, n=2)
-
-    y0 = generate_random_vicinal(N_steps=N, initial_var=0.001, bdef=2)
-    ts, ys = rk23(rhs, y0, T=50_000, h0=0.01, tol=0.001)  # for lw
-    
-    MES_KEY = "mind"
-    
-    measurements = []
-    for idx, t in enumerate(ts):
-        measurement = np.abs(l_stat(Y=ys[idx], tk=t, bdef=2.0)[MES_KEY])
-        measurements.append(measurement)
-    measurements = np.array(measurements)
-    
-    
-    plt.xlabel("Log t")
-    plt.ylabel(f"Log {MES_KEY}")
-    plt.scatter(np.log(ts), np.log(measurements))
-    plt.show()
-    
 if __name__ == "__main__":
     main()
     # integrate_and_lstat()
