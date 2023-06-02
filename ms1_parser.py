@@ -10,30 +10,46 @@ def line_str(slope, intercept):
     else:
         return f"y = {slope:.4f} x  - {np.abs(intercept):.4f}"
 
+    #   write(10,3075) h+1,w,w/h,mind,xk
 
 p = Path(sys.argv[1]).resolve(strict=True)
-data = pd.read_fwf(p, header=None ,names=["time", "h + 1", "w", "w/h", "mind"])
 
-time = data["time"]
-bunch_width = data["w"]
+try:
+    second_arg = sys.argv[2]
+    if second_arg == "--reverse-cols":
+        col_names = ["N", "w", "w/h", "mind", "time"]
+    else:
+        print(f"Second CLI arg does not make sense. Expected: --reverse-cols, got: {second_arg}. Using default column ordering")
+        col_names = ["time", "N", "w", "w/h", "mind"]
+except IndexError as _:
+        col_names = ["time", "N", "w", "w/h", "mind"]
 
-mask = time > 0
-time = time[mask]
-bunch_width = bunch_width[mask]
+print(f"Using column ordering for MSI output: {col_names=}")
 
-t_log = np.log(time)
-w_log = np.log(bunch_width)
+data = pd.read_fwf(p, header=None ,names=col_names)
+data_log = np.log10(data)
 
-slope, intercept = np.polyfit(t_log, w_log, deg=1)
+data_log.replace([np.inf, -np.inf], np.nan, inplace=True)
+data_log.dropna(inplace=True)
 
 
-w_log_fit = slope*t_log + intercept
+PLOT_KEY = "N"
+time_log = data_log["time"]
+bunch_statistic_log = data_log[PLOT_KEY]
 
-plt.scatter(t_log, w_log, color="red", label="MSI data")
-plt.xlim([np.min(t_log), np.max(t_log)])
-plt.ylim([np.min(w_log), np.max(w_log)])
+print(time_log)
+
+slope, intercept = np.polyfit(time_log, bunch_statistic_log, deg=1)
+bunch_statistic_log_fit = slope*time_log + intercept
+
+plt.scatter(time_log, bunch_statistic_log, color="red", label="MSI data")
+plt.plot(time_log, bunch_statistic_log_fit, label = line_str(slope, intercept))
+
+plt.xlim([np.min(time_log), np.max(time_log)])
+plt.ylim([np.min(bunch_statistic_log), np.max(bunch_statistic_log)])
+
 plt.xlabel(r"$\log(t)$")
-plt.ylabel(r"$\log(w)$")
-plt.plot(t_log, w_log_fit, label = line_str(slope, intercept))
+plt.ylabel(f"$\\log({PLOT_KEY})$")
 plt.legend()
+
 plt.show()
